@@ -59,7 +59,7 @@ jobs:
     - name: Save angular progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: angular-dist
+        name: dist
         if-no-files-found: error
         path: angular/dist
 
@@ -153,7 +153,7 @@ jobs:
     - name: Save rn progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: react-native-dist
+        name: rn-dist
         if-no-files-found: error
         path: react-native/dist
 
@@ -172,7 +172,7 @@ jobs:
       - name: Download angular progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: angular-dist
+          name: dist
           path: angular/dist
       - uses: actions/setup-node@v3
         with:
@@ -182,3 +182,55 @@ jobs:
         working-directory: angular/components
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: angular/components
+
+  publish_react_progress_icons:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') }}
+    needs: react_progress_icons
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      BRANCH: ${{ github.ref == 'refs/heads/master' && 'master' || 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download react progress icons package
+        uses: actions/download-artifact@v3
+        with:
+          name: react-dist
+          path: react/icons
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn --frozen-lockfile
+        working-directory: react/icons
+      - run: npm run publish:package -b ${{env.BRANCH}}
+        working-directory: react/icons
+
+  publish_rn_progress_icons:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') }}
+    needs: rn_progress_icons
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      BRANCH: ${{ github.ref == 'refs/heads/master' && 'master' || 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download react progress icons package
+        uses: actions/download-artifact@v3
+        with:
+          name: rn-dist
+          path: react-native
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn --frozen-lockfile
+        working-directory: react-native
+      - run: npm run publish:package -b ${{env.BRANCH}}
+        working-directory: react-native

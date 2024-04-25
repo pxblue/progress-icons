@@ -11,13 +11,13 @@ GRAY='\033[1;30m'
 NC='\033[0m' # No Color
 
 # Remove previous build
-rm -rf ./dist
+rm -rf ./rn-dist
 yarn && tsc --p tsconfig.lib.json
 
 echo -e "${BLUE}Copying Package Resources${NC}"
-cp -r package.json ./dist/package.json
-cp -r README.md ./dist/README.md
-cp -r LICENSE ./dist/LICENSE
-cp -r CHANGELOG.md ./dist/CHANGELOG.md
+cp -r package.json ./rn-dist/package.json
+cp -r README.md ./rn-dist/README.md
+cp -r LICENSE ./rn-dist/LICENSE
+cp -r CHANGELOG.md ./rn-dist/CHANGELOG.md
 
 echo -e "${GRAY}Complete${NC}\r\n"

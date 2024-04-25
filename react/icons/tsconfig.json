@@ -8,7 +8,7 @@
         "allowSyntheticDefaultImports": true,
         "strictNullChecks": false,
         "lib": ["esnext", "dom"],
-        "outDir": "dist"
+        "outDir": "react-dist"
     },
     "include": [
         "src"
