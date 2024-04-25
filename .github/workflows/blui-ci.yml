@@ -59,7 +59,7 @@ jobs:
     - name: Save angular progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: dist
+        name: angular-dist
         if-no-files-found: error
         path: angular/dist
 
@@ -106,7 +106,7 @@ jobs:
     - name: Save react progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: dist
+        name: react-dist
         if-no-files-found: error
         path: react/icons/dist
 
@@ -153,7 +153,7 @@ jobs:
     - name: Save rn progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: dist
+        name: react-native-dist
         if-no-files-found: error
         path: react-native/dist
 
