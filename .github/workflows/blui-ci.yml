@@ -108,7 +108,7 @@ jobs:
       with:
         name: react-dist
         if-no-files-found: error
-        path: react/icons/dist
+        path: react/icons/react-dist
 
   rn_progress_icons:
     runs-on: ubuntu-latest
@@ -155,7 +155,7 @@ jobs:
       with:
         name: rn-dist
         if-no-files-found: error
-        path: react-native/dist
+        path: react-native/rn-dist
 
   publish_angular_progress_icons:
     runs-on: ubuntu-latest
