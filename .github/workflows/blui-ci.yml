@@ -1,0 +1,236 @@
+name: CI Run
+
+on:
+  push:
+    branches: [ "dev", "master" ]
+  pull_request:
+    branches: [ "dev", "master" ]
+  pull_request_target:
+    types:
+      - opened
+    branches:
+      - '*/*'
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  angular_progress_icons:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: angular/components
+    - run: yarn install --frozen-lockfile
+      working-directory: angular/components
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: angular/demos/showcase
+    - run: yarn install --frozen-lockfile
+      working-directory: angular/demos/showcase
+    - run: yarn prettier:check
+      working-directory: angular/components
+    - run: yarn prettier:check
+      working-directory: angular/demos/showcase
+    - run: yarn lint
+      working-directory: angular/components
+    - run: yarn lint
+      working-directory: angular/demos/showcase
+    - run: yarn test:ci
+      working-directory: angular/components
+    - run: yarn test:ci
+      working-directory: angular/demos/showcase
+    - run: yarn build
+      working-directory: angular/components
+    - name: Save angular progress icon build
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        if-no-files-found: error
+        path: angular/dist
+
+  react_progress_icons:
+    runs-on: ubuntu-latest
+      
+    strategy:
+      matrix:
+        node-version: [18.x]
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: react/icons
+    - run: yarn install --frozen-lockfile
+      working-directory: react/icons
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: react/demo
+    - run: yarn install --frozen-lockfile
+      working-directory: react/demo
+    - run: yarn prettier:check
+      working-directory: react/icons
+    - run: yarn prettier:check
+      working-directory: react/demo
+    - run: yarn lint
+      working-directory: react/icons
+    - run: yarn lint
+      working-directory: react/demo
+    - run: yarn test
+      working-directory: react/icons
+    - run: yarn test
+      working-directory: react/demo
+    - run: yarn build
+      working-directory: react/icons
+    - name: Save react progress icon build
+      uses: actions/upload-artifact@v3
+      with:
+        name: react-dist
+        if-no-files-found: error
+        path: react/icons/react-dist
+
+  rn_progress_icons:
+    runs-on: ubuntu-latest
+            
+    strategy:
+      matrix:
+        node-version: [18.x]
+            
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: react-native
+    - run: yarn install --frozen-lockfile
+      working-directory: react-native
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+        cache-dependency-path: react-native/demo
+    - run: yarn install --frozen-lockfile
+      working-directory: react-native/demo
+    - run: yarn prettier:check
+      working-directory: react-native
+    - run: yarn prettier:check
+      working-directory: react-native/demo
+    - run: yarn lint
+      working-directory: react-native
+    - run: yarn lint
+      working-directory: react-native/demo
+    - run: yarn test
+      working-directory: react-native
+    - run: yarn test
+      working-directory: react-native/demo
+    - run: yarn build
+      working-directory: react-native
+    - name: Save rn progress icon build
+      uses: actions/upload-artifact@v3
+      with:
+        name: rn-dist
+        if-no-files-found: error
+        path: react-native/rn-dist
+
+  publish_angular_progress_icons:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') }}
+    needs: angular_progress_icons
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      BRANCH: ${{ github.ref == 'refs/heads/master' && 'master' || 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download angular progress icons package
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: angular/dist
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn --frozen-lockfile
+        working-directory: angular/components
+      - run: npm run publish:package -b ${{env.BRANCH}}
+        working-directory: angular/components
+
+  publish_react_progress_icons:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') }}
+    needs: react_progress_icons
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      BRANCH: ${{ github.ref == 'refs/heads/master' && 'master' || 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download react progress icons package
+        uses: actions/download-artifact@v3
+        with:
+          name: react-dist
+          path: react/icons
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn --frozen-lockfile
+        working-directory: react/icons
+      - run: npm run publish:package -b ${{env.BRANCH}}
+        working-directory: react/icons
+
+  publish_rn_progress_icons:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev') }}
+    needs: rn_progress_icons
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      BRANCH: ${{ github.ref == 'refs/heads/master' && 'master' || 'dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download react progress icons package
+        uses: actions/download-artifact@v3
+        with:
+          name: rn-dist
+          path: react-native
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn --frozen-lockfile
+        working-directory: react-native
+      - run: npm run publish:package -b ${{env.BRANCH}}
+        working-directory: react-native
