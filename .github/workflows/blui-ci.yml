@@ -1,4 +1,4 @@
-name: CI Run
+name: Build
 
 on:
   push:
@@ -31,7 +31,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: angular/components
     - run: yarn install --frozen-lockfile
       working-directory: angular/components
     - name: Use Node.js ${{ matrix.node-version }}
@@ -39,7 +38,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: angular/demos/showcase
     - run: yarn install --frozen-lockfile
       working-directory: angular/demos/showcase
     - run: yarn prettier:check
@@ -59,7 +57,7 @@ jobs:
     - name: Save angular progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: dist
+        name: angular-dist
         if-no-files-found: error
         path: angular/dist
 
@@ -78,7 +76,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react/icons
     - run: yarn install --frozen-lockfile
       working-directory: react/icons
     - name: Use Node.js ${{ matrix.node-version }}
@@ -86,7 +83,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react/demo
     - run: yarn install --frozen-lockfile
       working-directory: react/demo
     - run: yarn prettier:check
@@ -108,7 +104,7 @@ jobs:
       with:
         name: react-dist
         if-no-files-found: error
-        path: react/icons/react-dist
+        path: react/icons/dist
 
   rn_progress_icons:
     runs-on: ubuntu-latest
@@ -125,7 +121,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react-native
     - run: yarn install --frozen-lockfile
       working-directory: react-native
     - name: Use Node.js ${{ matrix.node-version }}
@@ -133,7 +128,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react-native/demo
     - run: yarn install --frozen-lockfile
       working-directory: react-native/demo
     - run: yarn prettier:check
@@ -155,7 +149,7 @@ jobs:
       with:
         name: rn-dist
         if-no-files-found: error
-        path: react-native/rn-dist
+        path: react-native/dist
 
   publish_angular_progress_icons:
     runs-on: ubuntu-latest
@@ -198,7 +192,7 @@ jobs:
       - name: Download react progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: react-dist
+          name: dist
           path: react/icons
       - uses: actions/setup-node@v3
         with:
@@ -224,7 +218,7 @@ jobs:
       - name: Download react progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: rn-dist
+          name: dist
           path: react-native
       - uses: actions/setup-node@v3
         with:
