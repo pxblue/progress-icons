@@ -193,7 +193,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
-          path: react/icons
+          path: react/icons/dist
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -219,7 +219,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist
-          path: react-native
+          path: react-native/dist
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
