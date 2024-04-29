@@ -166,7 +166,7 @@ jobs:
       - name: Download angular progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: dist
+          name: angular-dist
           path: angular/dist
       - uses: actions/setup-node@v3
         with:
@@ -192,7 +192,7 @@ jobs:
       - name: Download react progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: dist
+          name: react-dist
           path: react/icons/dist
       - uses: actions/setup-node@v3
         with:
@@ -218,7 +218,7 @@ jobs:
       - name: Download react progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: dist
+          name: rn-dist
           path: react-native/dist
       - uses: actions/setup-node@v3
         with:
