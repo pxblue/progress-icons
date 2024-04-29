@@ -6,7 +6,7 @@
     "scripts": {
         "build": "rm -rf ../dist && yarn && ng build && cp ../README.md ../dist",
         "test": "ng test",
-        "test:ci": "ng test --browsers=ChromeHeadless --watch false",
+        "test:ci": "ng test --watch false",
         "prettier": "prettier \"src/**/**.{ts,tsx,js,jsx,json,css,scss,html}\" --write",
         "prettier:check": "prettier \"src/**/**.{ts,tsx,js,jsx,json,css,scss,html}\" --check",
         "lint": "eslint \"src/**/**.ts\"",
