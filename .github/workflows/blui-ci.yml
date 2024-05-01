@@ -31,14 +31,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: angular/components
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: angular/demos/showcase
     - run: yarn prettier:check
       working-directory: angular/components
@@ -76,14 +76,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react/icons
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react/demo
     - run: yarn prettier:check
       working-directory: react/icons
@@ -121,14 +121,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react-native
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react-native/demo
     - run: yarn prettier:check
       working-directory: react-native
@@ -172,7 +172,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         working-directory: angular/components
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: angular/components
@@ -198,7 +198,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         working-directory: react/icons
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: react/icons
@@ -224,7 +224,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         working-directory: react-native
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: react-native
