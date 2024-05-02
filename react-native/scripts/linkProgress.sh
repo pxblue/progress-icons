@@ -19,7 +19,7 @@ mkdir -p "./demo/node_modules/@brightlayer-ui/react-native-progress-icons"
 echo -e "${GREEN}Done${NC}"
 
 echo -en "${BLUE}Copying build output into node_modules...${NC}";
-cp -r ./rn-dist/* ./demo/node_modules/@brightlayer-ui/react-native-progress-icons/
+cp -r ./dist/* ./demo/node_modules/@brightlayer-ui/react-native-progress-icons/
 echo -e "${GREEN}Done${NC}"
 
 echo -en "${BLUE}Copying package.json into node_modules...${NC}";

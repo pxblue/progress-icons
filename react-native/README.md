@@ -1,7 +1,6 @@
 # Brightlayer UI React Native Progress Icons
 
 [![](https://img.shields.io/npm/v/@brightlayer-ui/react-native-progress-icons.svg?label=@brightlayer-ui/react-native-progress-icons&style=flat)](https://www.npmjs.com/package/@brightlayer-ui/react-native-progress-icons)
-[![](https://img.shields.io/circleci/project/github/etn-ccis/blui-progress-icons/master.svg?style=flat)](https://circleci.com/gh/etn-ccis/blui-progress-icons/tree/master)
 
 <img width="100%" style="max-width: 600px" alt="Progress icons" src="https://raw.githubusercontent.com/etn-ccis/blui-progress-icons/master/assets/progress-icons.png" />
 

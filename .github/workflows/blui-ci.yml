@@ -1,4 +1,4 @@
-name: CI Run
+name: Build
 
 on:
   push:
@@ -31,16 +31,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: angular/components
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: angular/components
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: angular/demos/showcase
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: angular/demos/showcase
     - run: yarn prettier:check
       working-directory: angular/components
@@ -59,7 +57,7 @@ jobs:
     - name: Save angular progress icon build
       uses: actions/upload-artifact@v3
       with:
-        name: dist
+        name: angular-dist
         if-no-files-found: error
         path: angular/dist
 
@@ -78,16 +76,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react/icons
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react/icons
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react/demo
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react/demo
     - run: yarn prettier:check
       working-directory: react/icons
@@ -108,7 +104,7 @@ jobs:
       with:
         name: react-dist
         if-no-files-found: error
-        path: react/icons/react-dist
+        path: react/icons/dist
 
   rn_progress_icons:
     runs-on: ubuntu-latest
@@ -125,16 +121,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react-native
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react-native
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-        cache-dependency-path: react-native/demo
-    - run: yarn install --frozen-lockfile
+    - run: yarn install --immutable
       working-directory: react-native/demo
     - run: yarn prettier:check
       working-directory: react-native
@@ -155,7 +149,7 @@ jobs:
       with:
         name: rn-dist
         if-no-files-found: error
-        path: react-native/rn-dist
+        path: react-native/dist
 
   publish_angular_progress_icons:
     runs-on: ubuntu-latest
@@ -172,13 +166,13 @@ jobs:
       - name: Download angular progress icons package
         uses: actions/download-artifact@v3
         with:
-          name: dist
+          name: angular-dist
           path: angular/dist
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         working-directory: angular/components
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: angular/components
@@ -199,12 +193,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: react-dist
-          path: react/icons
+          path: react/icons/dist
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         working-directory: react/icons
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: react/icons
@@ -225,12 +219,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: rn-dist
-          path: react-native
+          path: react-native/dist
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn --frozen-lockfile
+      - run: yarn --immutable
         working-directory: react-native
       - run: npm run publish:package -b ${{env.BRANCH}}
         working-directory: react-native
