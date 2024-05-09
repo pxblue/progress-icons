@@ -174,7 +174,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn --immutable
         working-directory: angular/components
-      - run: npm run publish:package -b ${{env.BRANCH}}
+      - run: npm run publish:package -- -b ${{env.BRANCH}}
         working-directory: angular/components
 
   publish_react_progress_icons:
@@ -200,7 +200,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn --immutable
         working-directory: react/icons
-      - run: npm run publish:package -b ${{env.BRANCH}}
+      - run: npm run publish:package -- -b ${{env.BRANCH}}
         working-directory: react/icons
 
   publish_rn_progress_icons:
@@ -226,5 +226,5 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn --immutable
         working-directory: react-native
-      - run: npm run publish:package -b ${{env.BRANCH}}
+      - run: npm run publish:package -- -b ${{env.BRANCH}}
         working-directory: react-native
