@@ -164,7 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download angular progress icons package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: angular-dist
           path: angular/dist
@@ -190,7 +190,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download react progress icons package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: react-dist
           path: react/icons/dist
@@ -216,7 +216,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download react progress icons package
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: rn-dist
           path: react-native/dist
